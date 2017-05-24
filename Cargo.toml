@@ -1,0 +1,7 @@
+[package]
+name = "scribe"
+version = "0.1.0"
+authors = ["Francisco Gómez García <espectalll@kydara.com>"]
+
+[dependencies]
+gtk = {version = "0.1.3", features = ["v3_20"]}
