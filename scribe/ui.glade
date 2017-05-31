@@ -20,32 +20,59 @@
             <property name="can_focus">False</property>
             <property name="show_close_button">True</property>
             <child>
-              <object class="GtkButton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="always_show_image">True</property>
+              <object class="GtkRevealer">
+                <property name="can_focus">False</property>
+                <property name="transition_type">crossfade</property>
                 <child>
-                  <object class="GtkImage">
+                  <object class="GtkButton" id="newButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">document-new-symbolic</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="always_show_image">True</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">document-new-symbolic</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
+            </child>
+            <child>
+              <object class="GtkRevealer">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="transition_type">crossfade</property>
+                <child>
+                  <object class="GtkButton" id="backButton">
+                    <property name="label">gtk-go-back</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_stock">True</property>
+                    <property name="always_show_image">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
             </child>
             <child type="title">
               <object class="GtkStack" id="titleStack">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="transition_type">slide-left-right</property>
                 <child>
-                  <object class="GtkMenuButton" id="menubutton1">
+                  <object class="GtkMenuButton" id="newProjectSelector">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="halign">center</property>
                     <property name="relief">none</property>
-                    <property name="popover">popover1</property>
+                    <property name="popover">newProjectPopover</property>
                     <child>
                       <object class="GtkGrid">
                         <property name="visible">True</property>
@@ -55,7 +82,7 @@
                           <object class="GtkLabel">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">New project</property>
+                            <property name="label" translatable="yes">New Scribe project</property>
                             <property name="justify">center</property>
                             <attributes>
                               <attribute name="weight" value="bold"/>
@@ -82,8 +109,21 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="name">page1</property>
-                    <property name="title" translatable="yes">page1</property>
+                    <property name="name">newProjectSelectorPage</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Please introduce the basic details about your website</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="name">basicDetailsTitlePage</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
@@ -94,12 +134,34 @@
                     <property name="stack">editorStack</property>
                   </object>
                   <packing>
-                    <property name="name">page0</property>
-                    <property name="title" translatable="yes">page0</property>
-                    <property name="position">1</property>
+                    <property name="name">editorSwitcherPage</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
+            </child>
+            <child>
+              <object class="GtkRevealer">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="transition_type">crossfade</property>
+                <child>
+                  <object class="GtkButton" id="nextButton">
+                    <property name="label">gtk-go-forward</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="has_default">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_stock">True</property>
+                    <property name="always_show_image">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>
@@ -112,6 +174,7 @@
           <object class="GtkStack" id="rootStack">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="transition_type">slide-left-right</property>
             <child>
               <object class="GtkScrolledWindow">
                 <property name="visible">True</property>
@@ -134,11 +197,11 @@
                         <property name="margin_bottom">32</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="availableLabel">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_bottom">12</property>
-                            <property name="label" translatable="yes">Available templates</property>
+                            <property name="label" translatable="yes">Available preinstalled templates</property>
                             <attributes>
                               <attribute name="weight" value="bold"/>
                               <attribute name="foreground" value="#828286868686"/>
@@ -156,13 +219,20 @@
                             <property name="can_focus">False</property>
                             <property name="label_xalign">0</property>
                             <child>
-                              <object class="GtkViewport">
+                              <object class="GtkScrolledWindow">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can_focus">True</property>
+                                <property name="shadow_type">in</property>
                                 <child>
-                                  <object class="GtkListBox">
+                                  <object class="GtkViewport">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <child>
+                                      <object class="GtkListBox" id="templateList">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -182,11 +252,108 @@
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="name">templatesPage</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkGrid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="margin_left">32</property>
+                <property name="margin_right">32</property>
+                <property name="margin_top">32</property>
+                <property name="margin_bottom">32</property>
+                <property name="row_spacing">6</property>
+                <property name="column_spacing">12</property>
+                <child>
+                  <object class="GtkEntry" id="webNameInput">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="has_focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="activates_default">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="webDescriptionInput">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="activates_default">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="label" translatable="yes">Name</property>
+                    <property name="justify">right</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="label" translatable="yes">Description</property>
+                    <property name="justify">right</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="label" translatable="yes">Author</property>
+                    <property name="justify">right</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="webAuthorInput">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="activates_default">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="name">basicDetailsPage</property>
+                <property name="position">1</property>
+              </packing>
             </child>
             <child>
               <object class="GtkStack" id="editorStack">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="transition_type">slide-left-right</property>
                 <child>
                   <object class="GtkTextView">
                     <property name="visible">True</property>
@@ -213,7 +380,8 @@
                 </child>
               </object>
               <packing>
-                <property name="position">1</property>
+                <property name="name">editorPage</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -226,9 +394,9 @@
       </object>
     </child>
   </object>
-  <object class="GtkPopover" id="popover1">
+  <object class="GtkPopover" id="newProjectPopover">
     <property name="can_focus">False</property>
-    <property name="relative_to">menubutton1</property>
+    <property name="relative_to">newProjectSelector</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -246,7 +414,7 @@
             <property name="receives_default">True</property>
             <property name="margin_top">3</property>
             <property name="margin_bottom">3</property>
-            <property name="text" translatable="yes">New project</property>
+            <property name="text" translatable="yes">New project from preinstalled template</property>
             <property name="centered">True</property>
           </object>
           <packing>
@@ -261,7 +429,7 @@
             <property name="receives_default">True</property>
             <property name="margin_top">3</property>
             <property name="margin_bottom">3</property>
-            <property name="text" translatable="yes">New project from custom template</property>
+            <property name="text" translatable="yes">New project from local template</property>
             <property name="centered">True</property>
           </object>
           <packing>
