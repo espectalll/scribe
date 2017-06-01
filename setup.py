@@ -3,19 +3,19 @@
 from setuptools import setup, find_packages
 
 from codecs import open
-from os import path
-import glob
+import os
 
-here = path.abspath(path.dirname(__file__))
+here = os.path.abspath(os.path.dirname(__file__))
 
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 data_files = [('', ['scribe/ui.glade', 'scribe/templates.ui'])]
-# directories = glob.glob('templates/*/*/')
-# for directory in directories:
-#     files = glob.glob(directory + '*')
-#     data_files.append((directory, files))
+data_paths = []
+
+for (path, directories, filenames) in os.walk('scribe/templates'):
+    for filename in filenames:
+        data_paths.append(os.path.join('..', path, filename))
 
 setup(
     name = 'scribe',
@@ -47,6 +47,7 @@ setup(
 
     packages = find_packages(exclude=['templates']),
     package_dir = {'scribe': 'scribe'},
+    package_data={'': data_paths},
     include_package_data = True,
 
     install_requires=['pygobject', 'pygi-composite-templates'],
