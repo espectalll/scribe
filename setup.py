@@ -5,9 +5,9 @@ from setuptools import setup, find_packages
 from codecs import open
 import os
 
-here = os.path.abspath(os.path.dirname(__file__))
+PATH = os.path.abspath(os.path.dirname(__file__))
 
-with open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(os.path.join(PATH, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 data_files = [('', ['scribe/ui.glade', 'scribe/templates.ui'])]
@@ -50,7 +50,7 @@ setup(
     package_data={'': data_paths},
     include_package_data = True,
 
-    install_requires=['pygobject', 'pygi-composite-templates'],
+    install_requires=['pygobject', 'pygi-composite-templates', 'beautifulsoup4'],
 
     data_files = data_files,
 

@@ -1,4 +1,6 @@
-import sys, os
+import os
+import time
+import threading
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -10,6 +12,7 @@ PATH = os.path.dirname(os.path.abspath(__file__)) # + '/' + __name__
 
 class AppWindow(Gtk.ApplicationWindow):
     __builder__ = None
+    __edit_thread__ = None
     project = None
 
     def __init__(self, app):
@@ -88,7 +91,9 @@ class AppWindow(Gtk.ApplicationWindow):
         title_stack = self.__builder__.get_object('titleStack')
         root_stack = self.__builder__.get_object('rootStack')
         title_page = title_stack.get_child_by_name('editorSwitcherPage')
-        root_page = root_stack.get_child_by_name('editorPage')
+        root_page = root_stack.get_child_by_name('editorStackPage')
+        editor_stack = self.__builder__.get_object('editorStack')
+        editor = self.__builder__.get_object('editor')
         back_button = self.__builder__.get_object('backButton')
         next_button = self.__builder__.get_object('nextButton')
         new_button = self.__builder__.get_object('newButton')
@@ -97,12 +102,38 @@ class AppWindow(Gtk.ApplicationWindow):
         self.project.description = desc_input.get_text()
         self.project.author = author_input.get_text()
 
+        web_view = WebKit2.WebView()
+        editor_stack.add_named(web_view, 'previewPage')
+        editor_stack.child_set_property(web_view, 'title', 'Preview')
+        editor_stack.child_set_property(web_view,
+                                     'icon-name', 'web-browser-symbolic')
+        web_view.set_visible(True)
+        editor.get_buffer().connect('changed', self.on_edit)
+
         title_stack.set_visible_child(title_page)
         root_stack.set_visible_child(root_page)
         back_button.get_parent().set_reveal_child(False)
         next_button.get_parent().set_reveal_child(False)
         new_button.get_parent().set_visible(True)
         new_button.get_parent().set_reveal_child(True)
+
+    def on_edit(self, buffer):
+        self.__edit_thread__ = threading.Thread(target=self.render)
+        self.__edit_thread__.start()
+
+    def render(self):
+        # TODO: Stop thread if another one is created
+        # TODO: Merge content with template
+
+        editor_buffer = self.__builder__.get_object('editor').get_buffer()
+        editor_stack = self.__builder__.get_object('editorStack')
+        web_view = editor_stack.get_child_by_name('previewPage')
+
+        time.sleep(2)
+        start = editor_buffer.get_start_iter()
+        end = editor_buffer.get_end_iter()
+        text = editor_buffer.get_text(start, end, True)
+        web_view.load_html(text)
 
     def close(self, *args):
         self.MainWindow.destroy()
